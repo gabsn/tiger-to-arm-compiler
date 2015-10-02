@@ -64,7 +64,8 @@ class IfThenElse(Node):
 
 class Type(Node):
 
-    def _init__(self, typename):
+    def __init__(self, typename):
+        super().__init__()
         self.typename = typename
 
 
