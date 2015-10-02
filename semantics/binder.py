@@ -5,9 +5,8 @@ from utils.visitor import *
 class Binder(Visitor):
     """The binder takes care of linking identifier uses to its declaration."""
 
-    self.scopes = []
-
     def __init__(self):
+        self.scopes = []
         # Push an initial scope for top-level declarations
         self.push_new_scope()
 
