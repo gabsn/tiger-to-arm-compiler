@@ -95,8 +95,8 @@ class FunDecl(Decl):
 
 class FunCall(Node):
 
-    def __init__(self, name, params):
+    def __init__(self, identifier, params):
         super().__init__()
-        self.name = name
+        self.identifier = identifier
         self.params = params
         self.children = params
