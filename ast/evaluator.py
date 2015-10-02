@@ -22,9 +22,9 @@ class Evaluator:
         elif op == '/':
             return left / right
         elif op == '&':
-            return left & right
+            return left and right
         elif op == '|':
-            return left | right
+            return left or right
         elif op == '<':
             return left < right
         elif op == '<=':
@@ -35,6 +35,8 @@ class Evaluator:
             return left >= right
         elif op == '==':
             return left == right
+        elif op == '<>':
+            return left != right
 
         else:
             raise SyntaxError("unknown operator %s" % op)
