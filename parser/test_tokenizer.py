@@ -29,6 +29,15 @@ class TestLexer(unittest.TestCase):
         self.check('NUMBER', 3)
         self.check_end()
 
+    def test_perso_1(self):
+        lexer.input("3 < 5 | 0")
+        self.check('NUMBER', 3)
+        self.check('INFERIOR', '<')
+        self.check('NUMBER', 5)
+        self.check('OR', '|')
+        self.check('NUMBER', 0)
+        self.check_end()
+
     def test_keyword(self):
         lexer.input("var")
         self.check('VAR', 'var')

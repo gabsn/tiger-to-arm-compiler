@@ -1,7 +1,7 @@
 import unittest
 
 from ast.evaluator import Evaluator
-from ast.nodes import IntegerLiteral, BinaryOperator
+from ast.nodes import IntegerLiteral, BinaryOperator, IfThenElse
 from parser.parser import parse
 
 class TestEvaluator(unittest.TestCase):
@@ -30,6 +30,14 @@ class TestEvaluator(unittest.TestCase):
     def test_precedence(self):
         self.parse_check('1 + 2 * 3', 7)
         self.parse_check('2 * 3 + 1', 7)
+        self.parse_check('10 - 1 - 7', 2)
+
+    def test_comparison(self):
+        self.parse_check('1 <= 2', 1)
+
+    def test_ifthenelse(self):
+        self.parse_check('if 1 then 3 else 4/0', 3)
+        self.parse_check('if 0 then 3/0 else 5', 5)
 
 if __name__ == '__main__':
     unittest.main()

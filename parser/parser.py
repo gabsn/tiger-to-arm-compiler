@@ -5,18 +5,37 @@ import ply.yacc as yacc
 tokens = tokenizer.tokens
 
 precedence = (
-    ('left', 'PLUS'),
-    ('left', 'TIMES')
+    ('left', 'IF', 'THEN', 'ELSE'),
+    ('left', 'EQUAL'),
+    ('left', 'INFERIOR', 'INFERIOREQUAL', 
+	    'SUPERIOR', 'SUPERIOREQUAL'),
+    ('left', 'PLUS', 'MINUS'),
+    ('left', 'OR'),
+    ('left', 'TIMES', 'DIVIDE'),
+    ('left', 'AND')
 )
 
 def p_expression_binop(p):
     '''expression : expression PLUS expression
-                  | expression TIMES expression'''
+                  | expression MINUS expression
+                  | expression TIMES expression
+		  | expression DIVIDE expression
+                  | expression INFERIOR expression
+                  | expression INFERIOREQUAL expression 
+                  | expression SUPERIOR expression
+                  | expression SUPERIOREQUAL expression 
+                  | expression EQUAL expression
+                  | expression OR expression
+                  | expression AND expression'''
     p[0] = BinaryOperator(p[2], p[1], p[3])
 
 def p_expression_parentheses(p):
     'expression : LPAREN expression RPAREN'
     p[0] = p[2]
+
+def p_ifthenelse(p):
+    'expression : IF expression THEN expression ELSE expression'
+    p[0] = IfThenElse(p[2], p[4], p[6])
 
 def p_expression_number(p):
     'expression : NUMBER'
