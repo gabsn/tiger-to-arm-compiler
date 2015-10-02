@@ -71,6 +71,11 @@ class Type(Node):
 class Decl(Node):
     """Abstract type regrouping various entity declarations"""
 
+    def __init__(self):
+        super().__init__()
+        self.escapes = False
+        self.depth = None
+
 
 class VarDecl(Decl):
 
