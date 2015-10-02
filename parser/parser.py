@@ -26,7 +26,8 @@ def p_expression_binop(p):
                   | expression SUPERIOREQUAL expression 
                   | expression EQUAL expression
                   | expression OR expression
-                  | expression AND expression'''
+                  | expression AND expression
+                  | expression ASSIGN expression'''
     p[0] = BinaryOperator(p[2], p[1], p[3])
 
 def p_expression_parentheses(p):
