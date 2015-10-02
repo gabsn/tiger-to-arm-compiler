@@ -25,6 +25,7 @@ def p_expression_binop(p):
                   | expression SUPERIOR expression
                   | expression SUPERIOREQUAL expression 
                   | expression EQUAL expression
+                  | expression DIFFERENT expression
                   | expression OR expression
                   | expression AND expression
                   | expression ASSIGN expression'''
