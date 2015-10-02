@@ -2,12 +2,29 @@ from ast.nodes import *
 from utils.visitor import *
 
 
+class BindException(Exception):
+    """Exception encountered during the binding phase."""
+    pass
+
+
 class Binder(Visitor):
-    """The binder takes care of linking identifier uses to its declaration."""
+    """The binder takes care of linking identifier uses to its declaration. If
+    will also remember the depth of every declaration and every identifier,
+    and mark a declaration as escaping if it is accessed from a greater depth
+    than its definition.
+
+    A new scope is pushed every time a let or a function declaration is
+    encountered. It is not allowed to have the same name present several
+    times in the same scope.
+
+    The depth is increased every time a function declaration is encountered,
+    and restored afterwards."""
 
     def __init__(self):
+        """Create a new binder with an initial scope for top-level
+        declarations."""
+        self.depth = 0
         self.scopes = []
-        # Push an initial scope for top-level declarations
         self.push_new_scope()
 
     def push_new_scope(self):
@@ -22,20 +39,22 @@ class Binder(Visitor):
         """Return the current scope."""
         return self.scopes[-1]
 
-    def add_binding(self, name, decl):
-        """Add a binding to the current scope."""
-        self.current_scope()[name] = decl
-
-    def binding_exists(self, name):
-        """Check if a binding already exists in the current scope."""
-        return name in self.current_scope()
+    def add_binding(self, decl):
+        """Add a binding to the current scope and set the depth for
+        this declaration. If the name already exists, an exception
+        will be raised."""
+        if decl.name in self.current_scope():
+            raise BindException("name already defined in scope: %s" %
+                                decl.name)
+        self.current_scope()[decl.name] = decl
+        decl.depth = self.depth
 
     def lookup(self, name):
         """Return the declaration associated with a name, looking
         into the closest scope first. If no declaration is found,
         raise an exception."""
-        for scope in reversed(scopes):
+        for scope in reversed(self.scopes):
             if name in scope:
                 return scope[name]
         else:
-            return None
+            raise BindException("name not found: %s" % name)
