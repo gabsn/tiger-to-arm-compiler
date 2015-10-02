@@ -11,46 +11,52 @@ class Evaluator:
 
     @visitor(BinaryOperator)
     def visit(self, binop):
-        left, right = binop.left.accept(self), binop.right.accept(self)
         op = binop.op
-        if op == '+':
-            return left + right
-        elif op == '*':
-            return left * right
-        elif op == '-':
-            return left - right
-        elif op == '/':
-            return left // right
-        elif op == '&':
-            if left and right:
+        if op == '&':
+            left = binop.left.accept(self)
+            if not left:
+                return 0;
+            elif binop.right.accept(self):
                 return 1
             else:
                 return 0
         elif op == '|':
-            if left or right:
+            left = binop.left.accept(self)
+            if left:
+                return 1
+            elif binop.right.accept(self):
                 return 1
             else:
                 return 0
-        elif op == '<':
-            return left < right
-        elif op == '<=':
-            return left <= right
-        elif op == '>':
-            return left > right
-        elif op == '>=':
-            return left >= right
-        elif op == '=':
-            if left == right:
-                return 1
+        else: 
+            left, right = binop.left.accept(self), binop.right.accept(self)
+            if op == '+':
+                return left + right
+            elif op == '*':
+                return left * right
+            elif op == '/':
+                return left // right
+            elif op == '-':
+                return left - right
+            elif op == '<':
+                return left < right
+            elif op == '<=':
+                return left <= right
+            elif op == '>':
+                return left > right
+            elif op == '>=':
+                return left >= right
+            elif op == '=':
+                if left == right:
+                    return 1
+                else:
+                    return 0
+            elif op == '<>':
+                return left != right
+            elif op == ':=':
+                return right
             else:
-                return 0
-        elif op == '<>':
-            return left != right
-        elif op == ':=':
-            return right
-
-        else:
-            raise SyntaxError("unknown operator %s" % op)
+                raise SyntaxError("unknown operator %s" % op)
 
     @visitor(IfThenElse)
     def visit(self, cond):
