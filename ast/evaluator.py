@@ -39,11 +39,14 @@ class Evaluator:
             return left > right
         elif op == '>=':
             return left >= right
-        elif op == '==':
-            return left == right
+        elif op == '=':
+            if left == right:
+                return 1
+            else:
+                return 0
         elif op == '<>':
             return left != right
-        elif op == '=':
+        elif op == ':=':
             return right
 
         else:
