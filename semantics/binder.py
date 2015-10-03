@@ -49,12 +49,19 @@ class Binder(Visitor):
         self.current_scope()[decl.name] = decl
         decl.depth = self.depth
 
-    def lookup(self, name):
+    def lookup(self, identifier):
         """Return the declaration associated with a name, looking
         into the closest scope first. If no declaration is found,
-        raise an exception."""
+        raise an exception. If it is found, the decl and depth field
+        for this identifier are set, and the escapes field of the
+        declaration is updated if needed."""
+        name = identifier.name
         for scope in reversed(self.scopes):
             if name in scope:
-                return scope[name]
+                decl = scope[name]
+                identifier.decl = decl
+                identifier.depth = self.depth
+                decl.escapes |= self.depth > decl.depth
+                return decl
         else:
             raise BindException("name not found: %s" % name)
