@@ -34,6 +34,7 @@ class Dumper(Visitor):
             scope_diff = ''
         return '%s%s' % (id.name, scope_diff)
 
+
     @visitor(IfThenElse)
     def visit(self, cond):
         return "if %s then %s else %s" % (cond.condition.accept(self), cond.then_part.accept(self), cond.else_part.accept(self))
