@@ -12,6 +12,7 @@ class Node:
 
     def __init__(self):
         self.children = []
+        self.type = None
 
     def accept(self, visitor):
         return visitor.visit(self)
@@ -49,6 +50,7 @@ class Identifier(Node):
         super().__init__()
         self.name = name
         self.decl = None
+        self.depth = None
 
 
 class IfThenElse(Node):
@@ -59,3 +61,49 @@ class IfThenElse(Node):
         self.then_part = then_part
         self.else_part = else_part
         self.children = [condition, then_part, else_part]
+
+
+class Type(Node):
+
+    def __init__(self, typename):
+        super().__init__()
+        self.typename = typename
+
+
+class Decl(Node):
+    """Abstract type regrouping various entity declarations"""
+
+    def __init__(self):
+        super().__init__()
+        self.escapes = False
+        self.depth = None
+
+
+class VarDecl(Decl):
+
+    def __init__(self, name, type, exp):
+        super().__init__()
+        self.name = name
+        self.type = type
+        self.exp = exp
+        self.children = [type, exp]
+
+
+class FunDecl(Decl):
+
+    def __init__(self, name, args, type, exp):
+        super().__init__()
+        self.name = name
+        self.args = args
+        self.type = type
+        self.exp = exp
+        self.children = args + [type, exp]
+
+
+class FunCall(Node):
+
+    def __init__(self, identifier, params):
+        super().__init__()
+        self.identifier = identifier
+        self.params = params
+        self.children = [identifier] + params
