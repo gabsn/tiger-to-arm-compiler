@@ -5,6 +5,7 @@ import ply.yacc as yacc
 tokens = tokenizer.tokens
 
 precedence = (
+    ('left', 'LET', 'IN', 'VAR', 'END'),
     ('left', 'IF', 'THEN', 'ELSE'),
     ('left', 'OR'),
     ('left', 'AND'),
@@ -19,7 +20,7 @@ def p_expression_binop(p):
     '''expression : expression PLUS expression
                   | expression MINUS expression
                   | expression TIMES expression
-		  | expression DIVIDE expression
+                  | expression DIVIDE expression
                   | expression INFERIOR expression
                   | expression INFERIOREQUAL expression 
                   | expression SUPERIOR expression
@@ -27,8 +28,7 @@ def p_expression_binop(p):
                   | expression EQUAL expression
                   | expression DIFFERENT expression
                   | expression OR expression
-                  | expression AND expression
-                  | expression ASSIGN expression'''
+                  | expression AND expression'''
     p[0] = BinaryOperator(p[2], p[1], p[3])
 
 def p_expression_parentheses(p):
@@ -46,6 +46,28 @@ def p_expression_number(p):
 def p_expression_identifier(p):
     'expression : ID'
     p[0] = Identifier(p[1])
+
+def p_expression_vardecl(p):
+    'expression : VAR ID ASSIGN expression'
+    p[0] = VarDecl(p[2], int, p[4])  
+
+def p_expression_FunDecl(p):
+    'expression : FUNCTION ID LPAREN RPAREN EQUAL expression'
+    p[0] = FunDecl(p[2], [], int, p[6])
+
+def p_arg(p):
+        'arg : ID COLON INT'
+        p[0] = [Identifier(p[1])]
+
+    
+def p_args(p):
+    '''args : arg
+            | arg COMMA args'''
+    if len(p) == 2:
+        p[0] = p[1]
+    else: 
+        p[0] += p[1]
+            
 
 def p_error(p):
     import sys

@@ -33,7 +33,8 @@ tokens = ('END', 'IN', 'LET', 'VAR',
           'SUPERIOR', 'SUPERIOREQUAL',
           'EQUAL', 'DIFFERENT',
           'OR', 'AND',
-          'IF', 'THEN', 'ELSE') 
+          'IF', 'THEN', 'ELSE',
+          'FUNCTION', 'INT') 
 
 t_PLUS = r'\+'
 t_MINUS = r'\-'
@@ -56,6 +57,12 @@ t_AND = r'\&'
 t_IF = r'if'
 t_THEN = r'then'
 t_ELSE = r'else'
+t_LET = r'let'
+t_VAR = r'var'
+t_IN = r'in'
+t_END = r'end'
+t_FUNCTION = r'function'
+t_INT = r'in'
 
 t_ignore = ' \t'
 
