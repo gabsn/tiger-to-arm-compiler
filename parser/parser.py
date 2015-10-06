@@ -34,5 +34,4 @@ def p_error(p):
 parser = yacc.yacc()
 
 def parse(text):
-    return parser.parse(text, lexer = tokenizer.lexer)
-
+    return parser.parse(text, lexer = tokenizer.lexer.clone())
