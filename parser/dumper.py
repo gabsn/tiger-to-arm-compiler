@@ -41,10 +41,13 @@ class Dumper(Visitor):
 
     @visitor(VarDecl)
     def visit(self, var):
+        t = ""
+        if var.type != None:
+            t = t + ": %s" % 'int'
         if self.semantics and var.escapes == True:
-            return "var %s/*e*/ := %s" % (var.name, var.exp.accept(self))
+            return "var %s/*e*/%s := %s" % (var.name, t, var.exp.accept(self))
         else:
-            return "var %s := %s" % (var.name, var.exp.accept(self))
+            return "var %s%s := %s" % (var.name, t, var.exp.accept(self))
 
     @visitor(FunDecl)
     def visit(self, fun):
