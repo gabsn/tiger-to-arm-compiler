@@ -102,9 +102,9 @@ class Binder(Visitor):
             if len(fun.params) == len(decl.args):
                 self.visit_all(fun.children)
             else:
-                raise Exception("Wrong number of paramaters in %s" % identifier.name)
+                raise BindException("Wrong number of paramaters in %s" % identifier.name)
         else:
-            raise Exception("%s not a function instance" % identifier.name)
+            raise BindException("%s not a function instance" % identifier.name)
 
     @visitor(Identifier)
     def visit(self, name):
