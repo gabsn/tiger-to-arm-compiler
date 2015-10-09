@@ -94,7 +94,9 @@ def p_params(p):
     elif len(p) == 4:
         p[0] = [VarDecl(p[1], Type(p[3]), None)]
         #print('params %s' % p[1])
-    else: 
+    elif len(p) == 6 and p[1] == []: 
+        raise Exception('Bad syntax in parser.py')
+    else:
         p[0] = p[1] + [VarDecl(p[3], Type(p[5]), None)]
         #print('params %s' % p[3])
 
