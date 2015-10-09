@@ -85,6 +85,8 @@ def p_explist(p):
         p[0] = []
     elif len(p) == 2:
         p[0] = [p[1]]
+    elif len(p) == 4 and p[1] == []:
+        raise Exception('Bad syntax in parser.py')
     else:
         p[0] = p[1] + [p[3]]
 
