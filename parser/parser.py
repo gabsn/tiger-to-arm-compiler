@@ -75,7 +75,7 @@ def p_expression_fundecl(p):
 
 def p_expression_funcall(p):
     '''expression : ID LPAREN explist RPAREN'''
-    p[0] = FunCall(p[1], p[3])
+    p[0] = FunCall(Identifier(p[1]), p[3])
 
 def p_explist(p):
     '''explist : 

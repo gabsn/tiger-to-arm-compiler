@@ -74,7 +74,7 @@ class Dumper(Visitor):
             for i in range(len(l)-1):
                 args = args + l[i].accept(self) + ", "
             args = args + l[len(l)-1].accept(self)
-        return "%s(%s)" % (fun.identifier, args)
+        return "%s(%s)" % (fun.identifier.name, args)
 
 # la fonction tuple() permet de transformer une liste en une séquence
     @visitor(Let)
