@@ -78,9 +78,12 @@ def p_expression_funcall(p):
     p[0] = FunCall(p[1], p[3])
 
 def p_explist(p):
-    '''explist : expression
+    '''explist : 
+               | expression
                | explist COMMA expression'''
-    if len(p) == 2:
+    if len(p) == 1:
+        p[0] = []
+    elif len(p) == 2:
         p[0] = [p[1]]
     else:
         p[0] = p[1] + [p[3]]
