@@ -29,7 +29,7 @@ class Dumper(Visitor):
     def visit(self, id):
         if self.semantics:
             diff = id.depth - id.decl.depth
-            scope_diff = "{%d}" % diff if diff else ''
+            scope_diff = "/*%d*/" % diff if diff else ''
         else:
             scope_diff = ''
         return '%s%s' % (id.name, scope_diff)
@@ -41,8 +41,41 @@ class Dumper(Visitor):
 
     @visitor(VarDecl)
     def visit(self, var):
-        return "%s = %s" % (var.name, var.exp.accept(self))
+        if self.semantics and var.escapes == True:
+            return "var %s/*e*/ := %s" % (var.name, var.exp.accept(self))
+        else:
+            return "var %s := %s" % (var.name, var.exp.accept(self))
 
     @visitor(FunDecl)
     def visit(self, fun):
-        return "%s%s = %s" % (fun.name, tuple(fun.args), fun.exp.accept(self))
+        args = ""
+        l = fun.args
+        if len(l) == 1:
+            args = args + l[0].name
+        elif len(l) > 1:
+            for i in range(len(l)-1):
+                args = args + l[i].name + ", "
+            args = args + l[len(l)-1].name 
+        return "%s(%s) = %s" % (fun.name, args, fun.exp.accept(self))
+
+    @visitor(FunCall)
+    def visit(self, fun):
+        args = ""
+        l = fun.params
+        if len(l) == 1:
+            args = args + l[0].accept(self)
+        elif len(l) > 1:
+            for i in range(len(l)-1):
+                args = args + l[i].accept(self) + ", "
+            args = args + l[len(l)-1].accept(self)
+        return "%s(%s)" % (fun.identifier, args)
+
+# la fonction tuple() permet de transformer une liste en une séquence
+    @visitor(Let)
+    def visit(self, let):
+        decls, exps = "", ""
+        for x in let.decls:
+            decls = decls + x.accept(self) + " "
+        for y in let.exps:
+            exps = exps + y.accept(self) + " "
+        return "let %s in %s end" % (decls, exps)

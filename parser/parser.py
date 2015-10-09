@@ -1,20 +1,24 @@
 from ast.nodes import *
+
 from . import tokenizer
 import ply.yacc as yacc
 
 tokens = tokenizer.tokens
 
 precedence = (
-    ('left', 'LET', 'IN', 'VAR', 'END'),
     ('left', 'IF', 'THEN', 'ELSE'),
     ('left', 'OR'),
     ('left', 'AND'),
     ('left', 'EQUAL', 'DIFFERENT',
         'INFERIOR', 'INFERIOREQUAL', 
-        'SUPERIOR', 'SUPERIOREQUAL'),
+        'SUPERIOR', 'SUPERIOREQUAL',
+        'ASSIGN', 'COLON', 'COMMA'),
     ('left', 'PLUS', 'MINUS'),
-    ('left', 'TIMES', 'DIVIDE')
+    ('left', 'TIMES', 'DIVIDE'),
+    ('right', 'UMINUS')
 )
+
+############## fonctionnel ##################
 
 def p_expression_binop(p):
     '''expression : expression PLUS expression
@@ -43,36 +47,81 @@ def p_expression_number(p):
     'expression : NUMBER'
     p[0] = IntegerLiteral(p[1])
 
+def p_expression_uminus(p):
+    'expression : MINUS expression %prec UMINUS'
+    p[0] = BinaryOperator('-', IntegerLiteral('0'), p[2])
+
 def p_expression_identifier(p):
     'expression : ID'
     p[0] = Identifier(p[1])
 
 def p_expression_vardecl(p):
-    'expression : VAR ID ASSIGN expression'
-    p[0] = VarDecl(p[2], int, p[4])  
+    '''vardecl : VAR ID ASSIGN expression
+               | VAR ID COLON INT ASSIGN expression'''
+    if len(p) == 5:
+        p[0] = VarDecl(p[2], None, p[4])  
+        #print('vardecl sans int')
+    else:
+        p[0] = VarDecl(p[2], Type(p[4]), p[6])  
+        #print('vardecl avec int')
 
-def p_expression_FunDecl(p):
-    'expression : FUNCTION ID LPAREN RPAREN EQUAL expression'
-    p[0] = FunDecl(p[2], [], int, p[6])
+def p_expression_fundecl(p):
+    '''fundecl : FUNCTION ID LPAREN params RPAREN EQUAL expression
+               | FUNCTION ID LPAREN params RPAREN COLON INT EQUAL expression'''
+    if len(p) == 8:
+        p[0] = FunDecl(p[2], p[4], None , p[7])
+    else:
+        p[0] = FunDecl(p[2], p[4], Type(p[7]), p[9])
 
-def p_arg(p):
-        'arg : ID COLON INT'
-        p[0] = [Identifier(p[1])]
+def p_expression_funcall(p):
+    '''expression : ID LPAREN explist RPAREN'''
+    p[0] = FunCall(p[1], p[3])
 
-    
-def p_args(p):
-    '''args : arg
-            | arg COMMA args'''
+def p_explist(p):
+    '''explist : expression
+               | explist COMMA expression'''
     if len(p) == 2:
-        p[0] = p[1]
+        p[0] = [p[1]]
+    else:
+        p[0] = p[1] + [p[3]]
+
+def p_params(p):
+    '''params : 
+              | ID COLON INT
+              | params COMMA ID COLON INT'''
+    if len(p) == 1:
+        p[0] = []
+    elif len(p) == 4:
+        p[0] = [VarDecl(p[1], Type(p[3]), None)]
+        #print('params %s' % p[1])
     else: 
-        p[0] += p[1]
-            
+        p[0] = p[1] + [VarDecl(p[3], Type(p[5]), None)]
+        #print('params %s' % p[3])
+
+def p_expression_let(p):
+    '''expression : LET decls IN exps END'''
+    p[0] = Let(p[2], p[4])
+
+def p_decls(p):
+    '''decls : vardecl 
+             | fundecl
+             | decls vardecl
+             | decls fundecl'''
+    if len(p) == 2:
+        p[0] = [p[1]]
+    else:
+        p[0] = p[1] + [p[2]]
+
+def p_exps(p):
+    '''exps : expression'''
+    p[0] = [p[1]]
 
 def p_error(p):
     import sys
     sys.stderr.write("no way to analyze %s\n" % p)
     sys.exit(1)
+
+############## test #################
 
 parser = yacc.yacc()
 

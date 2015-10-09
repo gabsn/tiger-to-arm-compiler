@@ -65,3 +65,56 @@ class Binder(Visitor):
                 return decl
         else:
             raise BindException("name not found: %s" % name)
+
+    def visit_all(self, l):
+        "visit all children nodes"
+        for x in l:
+            x.accept(self)
+
+
+########## Surdédinition des méthodes de visitor ##########
+
+    @visitor(None)
+    def visit(self, node):
+        self.visit_all(node.children)
+
+    @visitor(VarDecl)
+    def visit(self, var):
+        self.add_binding(var)
+        if var.exp:
+            var.exp.accept(self)
+
+    @visitor(FunDecl)
+    def visit(self, fun):
+        self.add_binding(fun)
+        self.push_new_scope()
+        self.depth += 1
+        for x in fun.args:
+            x.accept(self)
+        fun.exp.accept(self)
+        self.depth -= 1
+
+    @visitor(FunCall)
+    def visit(self, fun):
+        name = fun.identifier
+        decl = self.lookup(Identifier(name))
+        if isinstance(decl, FunDecl):
+            if len(fun.params) == len(decl.args):
+                self.visit_all(fun.children)
+            else:
+                raise Exception("Wrong number of paramaters in %s" % name)
+        else:
+            raise Exception("%s not a function instance" % name)
+
+    @visitor(Identifier)
+    def visit(self, name):
+        self.lookup(name)
+
+    @visitor(Let)
+    def visit(self, let):
+        self.push_new_scope()
+        self.visit_all(let.children)
+        self.pop_scope()
+        
+
+
