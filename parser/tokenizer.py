@@ -17,6 +17,7 @@ keywords = {'array': 'ARRAY',
             'then': 'THEN',
             'to': 'TO',
             'type': 'TYPE',
+            'int': 'INT',
             'var': 'VAR',
             'while': 'WHILE'}
 
