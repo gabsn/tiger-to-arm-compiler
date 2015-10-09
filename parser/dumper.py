@@ -52,6 +52,9 @@ class Dumper(Visitor):
     @visitor(FunDecl)
     def visit(self, fun):
         args = ""
+        t = ""
+        if fun.type != None:
+            t = t + ": %s" % 'int'
         l = fun.args
         if len(l) == 1:
             args = args + l[0].name
@@ -59,7 +62,7 @@ class Dumper(Visitor):
             for i in range(len(l)-1):
                 args = args + l[i].name + ", "
             args = args + l[len(l)-1].name 
-        return "%s(%s) = %s" % (fun.name, args, fun.exp.accept(self))
+        return "function %s(%s)%s = %s" % (fun.name, args, t, fun.exp.accept(self))
 
     @visitor(FunCall)
     def visit(self, fun):
