@@ -57,11 +57,11 @@ class Dumper(Visitor):
             t = t + ": %s" % 'int'
         l = fun.args
         if len(l) == 1:
-            args = args + l[0].name
+            args = args + l[0].name + ": int"
         elif len(l) > 1:
             for i in range(len(l)-1):
-                args = args + l[i].name + ", "
-            args = args + l[len(l)-1].name 
+                args = args + l[i].name + ": int, "
+            args = args + l[len(l)-1].name + ":int"
         return "function %s(%s)%s = %s" % (fun.name, args, t, fun.exp.accept(self))
 
     @visitor(FunCall)
