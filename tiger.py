@@ -39,7 +39,7 @@ tree = parse(content)
 
 if options.dump:
     from parser.dumper import Dumper
-    print(tree.accept(Dumper()))
+    print(tree.accept(Dumper(semantics=False)))
 
 if options.eval:
     from ast.evaluator import Evaluator
