@@ -1,5 +1,10 @@
 import ply.lex as lex
 
+states = (
+        ('pythonccomment', 'exclusive'),
+        ('ccomment', 'exclusive')
+         )
+
 # List of keywords. Each keyword will be return as a token of a specific
 # type, which makes it easier to match it in grammatical rules.
 keywords = {'array': 'ARRAY',
@@ -92,4 +97,42 @@ def t_NUMBER(t):
 def t_error(t):
     raise lex.LexError("unknown token %s" % t.value, t.value)
 
+############## Implémentation des ccommentaires ###################"
+
+# inline ccomment : ignore the rest of the line
+def t_pythonccommentStart(t):
+    r'//.*'
+    t.lexer.begin('pythonccomment')
+
+# when in inline ccomment, a newline escapes the ccomment
+def t_pythonccomment_newline(t):
+    r'\n+'
+    t.lexer.begin('INITIAL')
+
+# when a ccomment begins, change state to ignore everthing but begin and end ccomment tokens
+def t_INITIAL_ccomment_ccommentStart(t):
+    r'/\*'
+    t.lexer.push_state('ccomment')
+
+
+def t_ccomment_ignore_text(t):
+     r'(?!/\*|\*/).'
+     pass
+
+
+def t_ccomment_newline(t):
+    r'\n+'
+    pass
+
+
+def t_ccomment_ccommentEnd(t):
+    r'\*/'
+    t.lexer.pop_state()
+
+
+def t_ccomment_eof(t):
+    raise lex.LexError("ccomment not closed")
+
 lexer = lex.lex()
+
+
