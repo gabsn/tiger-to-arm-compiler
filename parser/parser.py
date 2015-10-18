@@ -49,7 +49,7 @@ def p_expression_number(p):
 
 def p_expression_uminus(p):
     'expression : MINUS expression %prec UMINUS'
-    p[0] = BinaryOperator('-', IntegerLiteral('0'), p[2])
+    p[0] = BinaryOperator('-', IntegerLiteral(0), p[2])
 
 def p_expression_identifier(p):
     'expression : ID'
