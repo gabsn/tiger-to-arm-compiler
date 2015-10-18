@@ -9,7 +9,7 @@ from ast.nodes import *
 from utils.visitor import *
 
 
-class TypeError(Exception):
+class TypeException(Exception):
     pass
 
 
@@ -57,12 +57,12 @@ class Typer(Visitor):
         ast.accept(self)
         for n in self.cliques[self.void_type]:
             if isinstance(n, VarDecl):
-                raise TypeError('var %s cannot be void' % n.name)
+                raise TypeException('var %s cannot be void' % n.name)
         for n in self.cliques:
             if n.type is None:
                 n.type = self.void_type
                 if isinstance(n, VarDecl):
-                    raise TypeError('type of var %s cannot be determined' %
+                    raise TypeException('type of var %s cannot be determined' %
                                     n.name)
                 elif warn and isinstance(n, FunDecl):
                     sys.stderr.write("Warning: could not determine type "
@@ -97,7 +97,7 @@ class Typer(Visitor):
             for n in clique1:
                 self.assign_type(n, typenames[0])
         elif len(typenames) > 1:
-            raise TypeError('incompatible types: %s' % typenames)
+            raise TypeException('incompatible types: %s' % typenames)
 
     def assign_type(self, node, typename):
         """Assign a type to a node if it has none or if it is compatible."""
