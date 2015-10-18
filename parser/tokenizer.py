@@ -99,17 +99,14 @@ def t_error(t):
 
 ############## Implémentation des ccommentaires ###################"
 
-# inline ccomment : ignore the rest of the line
 def t_pythoncommentStart(t):
     r'//.*'
     t.lexer.begin('pythoncomment')
 
-# when in inline ccomment, a newline escapes the ccomment
 def t_pythoncomment_newline(t):
     r'\n+'
     t.lexer.begin('INITIAL')
 
-# when a ccomment begins, change state to ignore everthing but begin and end ccomment tokens
 def t_INITIAL_ccomment_ccommentStart(t):
     r'/\*'
     t.lexer.push_state('ccomment')

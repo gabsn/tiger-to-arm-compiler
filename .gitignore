@@ -6,3 +6,4 @@ parsetab.py
 __pycache__/
 *.pyc
 questions.txt
+test
