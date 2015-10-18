@@ -1,7 +1,7 @@
 import ply.lex as lex
 
 states = (
-        ('pythonccomment', 'exclusive'),
+        ('pythoncomment', 'exclusive'),
         ('ccomment', 'exclusive')
          )
 
@@ -100,12 +100,12 @@ def t_error(t):
 ############## Implémentation des ccommentaires ###################"
 
 # inline ccomment : ignore the rest of the line
-def t_pythonccommentStart(t):
+def t_pythoncommentStart(t):
     r'//.*'
-    t.lexer.begin('pythonccomment')
+    t.lexer.begin('pythoncomment')
 
 # when in inline ccomment, a newline escapes the ccomment
-def t_pythonccomment_newline(t):
+def t_pythoncomment_newline(t):
     r'\n+'
     t.lexer.begin('INITIAL')
 
