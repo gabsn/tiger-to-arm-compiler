@@ -1,6 +1,7 @@
 .*.swp
 *~
 *.py.swo
+*.py.swn
 .\#*\#
 parser.out
 parsetab.py
