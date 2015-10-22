@@ -82,8 +82,9 @@ class Dumper(Visitor):
         decls, exps = "", ""
         for x in let.decls:
             decls = decls + x.accept(self) + " "
-        for y in let.exps:
-            exps = exps + y.accept(self) + " "
+        for y in let.exps[:-1]:
+            exps = exps + y.accept(self) + "; "
+        exps = exps + let.exps[-1].accept(self)
         return "let %s in %s end" % (decls, exps)
 
     @visitor(SeqExp)
@@ -97,4 +98,8 @@ class Dumper(Visitor):
             for i in range(1, len(seq.exps)):
                 result = result + "; " + seq.exps[i].accept(self)
         return "(%s)" % (result)
+
+    @visitor(Assignment)
+    def visit(self, a):
+        return "%s := %s" % (a.identifier.name, a.exp.accept(self))
             

@@ -122,7 +122,8 @@ def p_params(p):
         #print('params %s' % p[3])
 
 def p_expression_let(p):
-    '''expression : LET decls IN exps END'''
+    '''expression : LET decls IN listexp END'''
+    #TODO rajouter assignment
     p[0] = Let(p[2], p[4])
 
 def p_decls(p):
@@ -135,14 +136,14 @@ def p_decls(p):
     else:
         p[0] = p[1] + [p[2]]
 
-def p_exps(p):
-    '''exps : expression'''
-    p[0] = [p[1]]
-
 def p_error(p):
     import sys
     sys.stderr.write("no way to analyze %s\n" % p)
     sys.exit(1)
+
+def p_assignment(p):
+    '''expression : ID ASSIGN expression'''
+    p[0] = Assignment(Identifier(p[1]), p[3])
 
 ############## test #################
 
