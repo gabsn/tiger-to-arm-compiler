@@ -97,7 +97,7 @@ def t_NUMBER(t):
 def t_error(t):
     raise lex.LexError("unknown token %s" % t.value, t.value)
 
-############## Implémentation des ccommentaires ###################"
+############## Implémentation des ccommentaires ###################
 
 def t_pythoncommentStart(t):
     r'//.*'
