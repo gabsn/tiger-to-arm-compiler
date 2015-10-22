@@ -98,12 +98,10 @@ class Binder(Visitor):
 
     @visitor(VarDecl)
     def visit(self, var):
-        if (var.exp.accept(self) == var.name):
-            raise BindException("name == exp dans VarDecl")
-        else: 
-            self.add_binding(var)
             if var.exp:
                 var.exp.accept(self)
+            self.add_binding(var)
+
 
     @visitor(FunDecl)
     def visit(self, fun):
