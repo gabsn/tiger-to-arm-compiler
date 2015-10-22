@@ -69,3 +69,15 @@ class Evaluator:
     @visitor(None)
     def visit(self, node):
         raise SyntaxError("no evaluation defined for %s" % node)
+
+    @visitor(SeqExp)
+    def visit(self, seq):
+        if len(seq.exps) == 0:
+            return None
+        else:
+            for x in seq.exps[:-1]: 
+                x.accept(self)
+            return seq.exps[-1].accept(self)
+
+        
+

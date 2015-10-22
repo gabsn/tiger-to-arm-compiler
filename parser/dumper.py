@@ -90,7 +90,8 @@ class Dumper(Visitor):
     def visit(self, seq):
         result = ""
         if len(seq.exps) == 1:
-            result = seq.exps[0]
+            result = seq.exps[0].accept(self)
+            return result
         elif len(seq.exps) >1:
             result = result + seq.exps[0].accept(self)
             for i in range(1, len(seq.exps)):
