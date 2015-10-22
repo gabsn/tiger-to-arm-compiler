@@ -36,8 +36,24 @@ def p_expression_binop(p):
     p[0] = BinaryOperator(p[2], p[1], p[3])
 
 def p_expression_parentheses(p):
-    'expression : LPAREN expression RPAREN'
-    p[0] = p[2]
+    'expression : LPAREN list RPAREN'
+    p[0] = SeqExp(p[2])
+
+def p_list(p):
+    '''list : 
+            | listexp'''
+    if len(p) == 1:
+        p[0] = []
+    else:
+        p[0] = p[1]
+
+def p_listexp(p):
+    '''listexp : expression
+               | listexp SEMICOLON expression'''
+    if len(p) == 2:
+        p[0] = [p[1]]
+    else:
+        p[0] = p[0] + [p[3]]
 
 def p_ifthenelse(p):
     'expression : IF expression THEN expression ELSE expression'

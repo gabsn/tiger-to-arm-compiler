@@ -85,3 +85,15 @@ class Dumper(Visitor):
         for y in let.exps:
             exps = exps + y.accept(self) + " "
         return "let %s in %s end" % (decls, exps)
+
+    @visitor(SeqExp)
+    def visit(self, seq):
+        result = ""
+        if len(seq.exps) == 1:
+            result = seq.exps[0]
+        elif len(seq.exps) >1:
+            result = result + seq.exps[0].accept(self)
+            for i in range(1, len(seq.exps)):
+                result = result + "; " + seq.exps[i].accept(self)
+        return "(%s)" % (result)
+            
