@@ -176,7 +176,7 @@ class Binder(Visitor):
 
     @visitor(Break)
     def visit(self, b):
-        if len(self.break_stack) > 0:
+        if len(self.break_stack) > 1:
             self.pop_loop()
         else:
             raise BindException("Break unauthorized")
