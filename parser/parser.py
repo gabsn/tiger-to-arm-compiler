@@ -58,7 +58,7 @@ def p_listexp(p):
 def p_ifthenelse(p):
     '''expression : IF expression THEN expression ELSE expression
                   | IF expression THEN expression'''
-    if len(p):
+    if len(p) == 5:
         p[0] = IfThenElse(p[2], p[4], None)
     else:
         p[0] = IfThenElse(p[2], p[4], p[6])
