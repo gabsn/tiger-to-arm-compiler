@@ -148,9 +148,15 @@ class Binder(Visitor):
                     raise BindException("%s already assigned" % name)
                 assignment.identifier.decl = decl
                 assignment.identifier.depth = self.depth
+                break
 
         if (namefound == False): 
             raise BindException("name not found")
+        
+    @visitor(IndexDecl)
+    def visit(self, i):
+        self.push_new_scope()
+        self.add_binding(i)
         
 
 
