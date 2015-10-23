@@ -40,7 +40,8 @@ tokens = ('END', 'IN', 'LET', 'VAR',
           'EQUAL', 'DIFFERENT',
           'OR', 'AND',
           'IF', 'THEN', 'ELSE',
-          'FUNCTION', 'INT') 
+          'FUNCTION', 'INT',
+          'WHILE', 'FOR', 'TO', 'DO') 
 
 t_PLUS = r'\+'
 t_MINUS = r'\-'
@@ -60,13 +61,6 @@ t_EQUAL = r'\='
 t_DIFFERENT = r'\<>'
 t_OR = r'\|'
 t_AND = r'\&'
-t_IF = r'if'
-t_LET = r'let'
-t_VAR = r'var'
-t_IN = r'in'
-t_END = r'end'
-t_FUNCTION = r'function'
-t_INT = r'in'
 
 t_ignore = ' \t'
 t_pythoncomment_ignore = ''

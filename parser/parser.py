@@ -45,20 +45,6 @@ def p_expression_identifier(p):
     'expression : ID'
     p[0] = Identifier(p[1])
 
-########### Parenthesis ###############
-
-def p_expression_parentheses(p):
-    'expression : LPAREN list RPAREN'
-    p[0] = SeqExp(p[2])
-
-def p_list(p):
-    '''list : 
-            | listexp'''
-    if len(p) == 1:
-        p[0] = []
-    else:
-        p[0] = p[1]
-
 ############ IfThenElse #############
 
 def p_expression_ifthenelse(p):
@@ -157,11 +143,37 @@ def p_listexp(p):
     else:
         p[0] = p[1] + [p[3]]
 
+########### Sequence ###############
+
+def p_expression_sequence(p):
+    'expression : LPAREN list RPAREN'
+    p[0] = SeqExp(p[2])
+
+def p_list(p):
+    '''list : 
+            | listexp'''
+    if len(p) == 1:
+        p[0] = []
+    else:
+        p[0] = p[1]
+
 ############## Assignment ##############
 
 def p_assignment(p):
     '''expression : ID ASSIGN expression'''
     p[0] = Assignment(Identifier(p[1]), p[3])
+
+############# While #############
+
+def p_while(p):
+    '''expression : WHILE expression DO expression'''
+    p[0] = While(p[2], p[4])
+    
+############# For #############
+
+def p_for(p):
+    '''expression : FOR ID ASSIGN expression TO expression DO expression'''
+    p[0] = For(IndexDecl(p[2]), p[4], p[6], p[8]) 
 
 ############## Parse error #############
 
