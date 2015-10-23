@@ -39,9 +39,8 @@ class Dumper(Visitor):
     def visit(self, cond):
         if cond.else_part == None:
             return "if %s then %s" % (cond.condition.accept(self), cond.then_part.accept(self))
-
-
-        return "if %s then %s else %s" % (cond.condition.accept(self), cond.then_part.accept(self), cond.else_part.accept(self))
+        else:
+            return "if %s then %s else %s" % (cond.condition.accept(self), cond.then_part.accept(self), cond.else_part.accept(self))
 
     @visitor(VarDecl)
     def visit(self, var):

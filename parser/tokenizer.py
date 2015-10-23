@@ -71,6 +71,8 @@ t_FUNCTION = r'function'
 t_INT = r'in'
 
 t_ignore = ' \t'
+t_pythoncomment_ignore = ''
+t_ccomment_ignore = ''
 
 # Count lines when newlines are encountered
 def t_newline(t):
@@ -96,6 +98,9 @@ def t_NUMBER(t):
 
 def t_error(t):
     raise lex.LexError("unknown token %s" % t.value, t.value)
+
+def t_pythoncomment_ccomment_error(t):
+    raise lex.LexError("error in tokenizer")
 
 ############## Implémentation des ccommentaires ###################
 
