@@ -117,3 +117,7 @@ class Dumper(Visitor):
     @visitor(For)
     def visit(self, f):
         return "for %s := %s to %s do %s" % (f.indexdecl.name, f.low_bound.accept(self), f.high_bound.accept(self), f.exp.accept(self))
+
+    @visitor(Break)
+    def visit(self, b):
+        return "break"

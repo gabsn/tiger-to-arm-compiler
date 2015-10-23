@@ -46,7 +46,7 @@ def p_expression_identifier(p):
     p[0] = Identifier(p[1])
 
 def p_expression_break(p):
-    'expression : break'
+    'expression : BREAK'
     p[0] = Break()
 
 ############ IfThenElse #############
