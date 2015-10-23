@@ -140,7 +140,9 @@ class Binder(Visitor):
         name = assignment.identifier.name
         for scope in self.scopes:
             if name in scope:
-                raise BindException("%s already assigned" % name)
+                decl = scope[name]
+                if isinstance(decl, FunDecl):
+                    raise BindException("%s already assigned" % name)
         
 
 
