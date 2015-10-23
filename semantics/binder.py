@@ -143,6 +143,8 @@ class Binder(Visitor):
                 decl = scope[name]
                 if isinstance(decl, FunDecl):
                     raise BindException("%s already assigned" % name)
+            else:
+                raise BindException("name not found")
         
 
 
