@@ -134,6 +134,13 @@ class Binder(Visitor):
         self.push_new_scope()
         self.visit_all(let.children)
         self.pop_scope()
+
+    @visitor(Assignment)
+    def visit(self, assignment):
+        name = assignment.identifier.name
+        for scope in self.scopes:
+            if name in scope:
+                raise BindException("%s already assigned" % name)
         
 
 
