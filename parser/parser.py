@@ -122,9 +122,13 @@ def p_params(p):
         #print('params %s' % p[3])
 
 def p_expression_let(p):
-    '''expression : LET decls IN listexp END'''
+    '''expression : LET decls IN listexp END
+                  | LET decls IN END'''
     #TODO rajouter assignment
-    p[0] = Let(p[2], p[4])
+    if len(p) == 5:
+        p[0] = Let(P[2], None)
+    else:
+        p[0] = Let(p[2], p[4])
 
 def p_decls(p):
     '''decls : vardecl 
