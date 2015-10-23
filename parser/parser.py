@@ -29,6 +29,7 @@ def p_expression_binop(p):
                   | expression DIFFERENT expression
                   | expression OR expression
                   | expression AND expression'''
+   p[0] = BinaryOperator(p[2], p[1], p[3])
 
 ############ Expressions #############
 
@@ -43,8 +44,6 @@ def p_expression_uminus(p):
 def p_expression_identifier(p):
     'expression : ID'
     p[0] = Identifier(p[1])
-
-   p[0] = BinaryOperator(p[2], p[1], p[3])
 
 ########### Parenthesis ###############
 
