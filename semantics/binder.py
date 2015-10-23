@@ -21,8 +21,7 @@ class Binder(Visitor):
     and restored afterwards.
 
     A loop node for break is pushed every time we start a for or while loop.
-    Pushing None means that we are outside of break scope, which happens in the
-    declarations part of a let."""
+    Pushing None means that we are outside of break scope, which happens in the declarations part of a let."""
 
     def __init__(self):
         """Create a new binder with an initial scope for top-level
@@ -99,9 +98,9 @@ class Binder(Visitor):
 
     @visitor(VarDecl)
     def visit(self, var):
-            if var.exp:
-                var.exp.accept(self)
-            self.add_binding(var)
+        if var.exp:
+            var.exp.accept(self)
+        self.add_binding(var)
 
 
     @visitor(FunDecl)
@@ -133,8 +132,10 @@ class Binder(Visitor):
     @visitor(Let)
     def visit(self, let):
         self.push_new_scope()
+        self.push_new_loop(None)
         self.visit_all(let.children)
         self.pop_scope()
+        self.pop_loop()
 
     @visitor(Assignment)
     def visit(self, assignment):
@@ -177,7 +178,11 @@ class Binder(Visitor):
     @visitor(Break)
     def visit(self, b):
         if len(self.break_stack) > 1:
-            self.pop_loop()
+            loop = self.break_stack[-1]
+            if loop == None:
+                raise BindException("Break unauthorized in let declartion")
+            else:
+                self.pop_loop()
         else:
             raise BindException("Break unauthorized")
 
