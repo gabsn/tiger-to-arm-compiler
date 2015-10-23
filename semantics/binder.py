@@ -157,14 +157,30 @@ class Binder(Visitor):
     def visit(self, i):
         self.add_binding(i)
 
+    @visitor(While)
+    def visit(self, w):
+        self.push_new_loop(self)
+        self.visit_all(w.children)
+        self.pop_loop()
+
     @visitor(For)
     def visit(self, f):
-       f.low_bound.accept(self)
-       f.high_bound.accept(self)
-       self.push_new_scope()
-       f.indexdecl.accept(self)
-       f.exp.accept(self)
-       self.pop_scope()
+        self.push_new_loop(f)
+        f.low_bound.accept(self)
+        f.high_bound.accept(self)
+        self.push_new_scope()
+        f.indexdecl.accept(self)
+        f.exp.accept(self)
+        self.pop_scope()
+        self.pop_loop()
+
+    @visitor(Break)
+    def visit(self, b):
+        if len(self.break_stack) > 0:
+            self.pop_loop()
+        else:
+            raise BindException("Break unauthorized")
+
         
 
 

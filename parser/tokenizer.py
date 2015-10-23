@@ -41,7 +41,7 @@ tokens = ('END', 'IN', 'LET', 'VAR',
           'OR', 'AND',
           'IF', 'THEN', 'ELSE',
           'FUNCTION', 'INT',
-          'WHILE', 'FOR', 'TO', 'DO') 
+          'WHILE', 'FOR', 'TO', 'DO', 'BREAK') 
 
 t_PLUS = r'\+'
 t_MINUS = r'\-'
