@@ -133,9 +133,10 @@ class Binder(Visitor):
     def visit(self, let):
         self.push_new_scope()
         self.push_new_loop(None)
-        self.visit_all(let.children)
-        self.pop_scope()
+        self.visit_all(let.decls)
         self.pop_loop()
+        self.visit_all(let.exps)
+        self.pop_scope()
 
     @visitor(Assignment)
     def visit(self, assignment):
@@ -180,7 +181,7 @@ class Binder(Visitor):
         if len(self.break_stack) > 1:
             loop = self.break_stack[-1]
             if loop == None:
-                raise BindException("Break unauthorized in let declartion")
+                raise BindException("Break unauthorized in let declaration")
             else:
                 self.pop_loop()
         else:
