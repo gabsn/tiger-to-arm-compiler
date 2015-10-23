@@ -85,9 +85,10 @@ class Dumper(Visitor):
         for x in let.decls[:-1]:
             decls = decls + x.accept(self) + " "
         decls = decls + let.decls[-1].accept(self)
-        for y in let.exps[:-1]:
-            exps = exps + y.accept(self) + "; "
-        exps = exps + let.exps[-1].accept(self)
+        if len(let.exps) > 0:
+            for y in let.exps[:-1]:
+                exps = exps + y.accept(self) + "; "
+            exps = exps + let.exps[-1].accept(self)
         return "let %s in %s end" % (decls, exps)
 
     @visitor(SeqExp)

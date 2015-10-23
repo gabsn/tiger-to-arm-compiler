@@ -126,7 +126,7 @@ def p_expression_let(p):
                   | LET decls IN END'''
     #TODO rajouter assignment
     if len(p) == 5:
-        p[0] = Let(P[2], None)
+        p[0] = Let(p[2], [])
     else:
         p[0] = Let(p[2], p[4])
 
