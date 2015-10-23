@@ -6,13 +6,9 @@ import ply.yacc as yacc
 tokens = tokenizer.tokens
 
 precedence = (
-    ('left', 'IF', 'THEN', 'ELSE'),
     ('left', 'OR'),
     ('left', 'AND'),
-    ('left', 'EQUAL', 'DIFFERENT',
-        'INFERIOR', 'INFERIOREQUAL', 
-        'SUPERIOR', 'SUPERIOREQUAL',
-        'ASSIGN', 'COLON', 'COMMA'),
+    ('left', 'EQUAL', 'DIFFERENT', 'INFERIOR', 'INFERIOREQUAL', 'SUPERIOR', 'SUPERIOREQUAL', 'ASSIGN', 'COLON', 'COMMA'),
     ('left', 'PLUS', 'MINUS'),
     ('left', 'TIMES', 'DIVIDE'),
     ('right', 'UMINUS')
@@ -55,17 +51,16 @@ def p_listexp(p):
     else:
         p[0] = p[1] + [p[3]]
 
-def p_ifthenelse(p):
-    '''expression : IF expression THEN expression elsepart'''
-    p[0] = IfThenElse(p[2], p[4], p[5])
-
-def p_elsepart(p):
-    ''' elsepart : 
-                 | ELSE expression'''
-    if len(p) == 1:
-        p[0] = None
+def p_expression_ifthenelse(p):
+    '''expression : IF expression THEN expression ELSE expression'''
+    if len(p) == 7:
+        p[0] = IfThenElse(p[2], p[4], p[6])
     else:
-        p[0] = p[2]
+        p[0] = IfThenElse(p[2], p[4], None)
+
+def p_expression_ifthen(p):
+    '''expression : IF expression THEN expression'''
+    p[0] = IfThenElse(p[2], p[4], None)
 
 def p_expression_number(p):
     'expression : NUMBER'
