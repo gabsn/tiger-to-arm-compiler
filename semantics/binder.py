@@ -138,13 +138,15 @@ class Binder(Visitor):
     @visitor(Assignment)
     def visit(self, assignment):
         name = assignment.identifier.name
-        for scope in self.scopes:
+        namefound = False
+        for scope in reversed(self.scopes):
             if name in scope:
+                namefound = True
                 decl = scope[name]
                 if isinstance(decl, FunDecl):
                     raise BindException("%s already assigned" % name)
-            else:
-                raise BindException("name not found")
+        if (namefound == False): 
+            raise BindException("name not found")
         
 
 
