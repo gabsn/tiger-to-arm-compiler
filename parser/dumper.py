@@ -53,8 +53,10 @@ class Dumper(Visitor):
     def visit(self, fun):
         args = ""
         t = ""
-        if fun.type.typename != 'void':
-            t = t + ": %s" % fun.type.typename
+        if fun.type != None:
+            typef = fun.type.typename
+            if typef != "void":
+                t = t + ": %s" % typef
         l = fun.args
         if len(l) == 1:
             args = args + l[0].name + ": int"
