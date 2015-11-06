@@ -1,0 +1,14 @@
+//90
+let
+    var result := 0
+    function f(n: int) =
+        (for i := 1 to n do
+            for j := 1 to n do
+                (if i = 2 then break;
+            result := result + 1);
+        result)
+in 
+    print_int(f(10))
+end
+    
+

@@ -1,0 +1,10 @@
+//4
+let
+    var a := 0
+in
+    for i := 1 to 10 do
+        if i = 5
+        then break
+        else a := a + 1;
+    print_int(a)
+end

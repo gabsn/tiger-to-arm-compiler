@@ -1,0 +1,7 @@
+//35
+let
+    function f(n: int) = n*5
+    function g(n: int) = n+5
+in
+    print_int(f(g(2)))
+end
