@@ -408,6 +408,8 @@ class Translator(Visitor):
 
     @visitor(SeqExp)
     def visit(self, seq):
+        if len(seq.exps) == 1:
+            return seq.exps[0].accept(self)
         exps = self.visit_all(seq.exps)
         type = seq.exps[-1].type if seq.exps else None
         if type is None or type.typename == 'void':
