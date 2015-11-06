@@ -140,6 +140,12 @@ class Binder(Visitor):
 
     @visitor(Assignment)
     def visit(self, assignment):
+        ### Nouveau code ###
+        self.visit_all(assignment.children)
+        if not isinstance(assignment.identifier.decl, VarDecl):
+                        raise BindException("%s is an index and should not be modified" % assignment.identifier.name)
+        ### Ancien code ###
+        """
         name = assignment.identifier.name
         namefound = False
         for scope in reversed(self.scopes):
@@ -154,6 +160,7 @@ class Binder(Visitor):
 
         if (namefound == False): 
             raise BindException("name not found")
+        """
         
     @visitor(IndexDecl)
     def visit(self, i):

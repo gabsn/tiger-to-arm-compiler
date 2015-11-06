@@ -81,6 +81,7 @@ class Dumper(Visitor):
             args = args + l[len(l)-1].accept(self)
         return "%s(%s)" % (fun.identifier.name, args)
 
+
 # la fonction tuple() permet de transformer une liste en une séquence
     @visitor(Let)
     def visit(self, let):
