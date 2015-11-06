@@ -1,8 +1,11 @@
-//4
+//1024
 let
-    function pow(x: int, n: int) =
-        for i := 1 to n do x := x * 2;
-        x
+    function pow(x: int, n: int) = 
+    let
+        var x_0 := x
+    in
+        (for i := 1 to n-1 do x := x * x_0; x)
+    end
 in
-    print_int(pow(2,2))
+    print_int(pow(2,10))
 end
