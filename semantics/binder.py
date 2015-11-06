@@ -206,6 +206,7 @@ class Binder(Visitor):
             if loop == None:
                 raise BindException("Break unauthorized in let declaration")
             else:
+                b.loop = loop
                 self.pop_loop()
         else:
             raise BindException("Break unauthorized")
