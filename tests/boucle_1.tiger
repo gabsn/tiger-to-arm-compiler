@@ -1,0 +1,8 @@
+//4
+let
+    function pow(x: int, n: int) =
+        for i := 1 to n do x := x * 2;
+        x
+in
+    print_int(pow(2,2))
+end

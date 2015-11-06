@@ -1,0 +1,12 @@
+//832040
+let
+    function f(n: int) =
+        if n <= 1
+        then 
+            if n = 0
+            then 0
+            else 1
+        else f(n-1) + f(n-2)
+in 
+    print_int(f(30))
+end
