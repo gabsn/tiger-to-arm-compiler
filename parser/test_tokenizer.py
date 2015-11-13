@@ -15,6 +15,8 @@ class TestLexer(unittest.TestCase):
         t = lexer.token()
         self.assertIsNone(t)
 
+#################### TESTS ############################
+
     def test_basic(self):
         lexer.input("42")
         self.check('NUMBER', 42)
@@ -56,6 +58,8 @@ class TestLexer(unittest.TestCase):
     def test_unhandled_keyword(self):
         lexer.input("array")
         self.assertRaises(LexError, lexer.token)
+
+######################### FIN TESTS #######################
 
 if __name__ == '__main__':
     unittest.main()
