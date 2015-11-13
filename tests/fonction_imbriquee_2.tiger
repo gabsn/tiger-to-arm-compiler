@@ -1,0 +1,19 @@
+//
+let 
+    function f(x:int) = 
+    let 
+        var x_0 := x
+    in 
+        (for i := 1 to x do x_0 := x*x; x_0)
+    end
+    function g(x:int) =
+    let
+        var x_0 := 0
+        var counter := 0
+    in
+        (while counter < x do (x_0 := x_0 + 2; counter := counter + 1); x_0)
+    end
+in
+    print_int(f(g(3)))
+end
+
